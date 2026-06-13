@@ -1,0 +1,25 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Dependencies
+packages/
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+/Migrations
