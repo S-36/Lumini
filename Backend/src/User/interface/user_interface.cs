@@ -16,7 +16,7 @@ namespace Backend.src.User.Interface
 
     public interface IUserService
     {
-        Task<Result<User>> RegisterUserAsync(User_Register_DTO userDto);
+        Task<Result> RegisterUserAsync(User_Register_DTO userDto);
         Task<Result<string>> LoginUserAsync(User_Login_DTO loginDto);
 
     }

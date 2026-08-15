@@ -16,7 +16,7 @@ namespace Backend.src.User.Services
             _jwtService = jwtService;
         }
 
-        public async Task<Result<User>> RegisterUserAsync(User_Register_DTO userDto)
+        public async Task<Result> RegisterUserAsync(User_Register_DTO userDto)
         {
             // Map the DTO to the User entity
             var user = new User
@@ -30,7 +30,7 @@ namespace Backend.src.User.Services
             };
 
             var registeredUser = await _userRepository.RegisterUserAsync(user);
-            return Result<User>.Success(registeredUser);
+            return Result.Success(201);
         }
 
         public async Task<Result<string>> LoginUserAsync(User_Login_DTO loginDto)
