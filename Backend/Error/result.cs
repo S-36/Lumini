@@ -32,10 +32,10 @@ namespace Backend.Error
         public string? Error { get; private set; }
         public int StatusCode { get; private set; }
 
-        public static Result Success(int StatusCode) => new Result
+        public static Result Success(int statusCode) => new Result
         {
             IsSuccess = true,
-            StatusCode = StatusCode
+            StatusCode = statusCode
         };
 
         public static Result Failure(string error, int statusCode) => new Result

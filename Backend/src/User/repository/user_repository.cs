@@ -22,12 +22,22 @@ namespace Backend.src.User.repository
             return user;
         }
 
-        public async Task<Result<User_Get>> GetUserByEmailAsync(string email)
+        public async Task<Result<User>> GetUserByEmailAsync(string email)
         {
             var result = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (result == null)
             {
-                return Result<User_Get>.Failure("This email is not registered", 404);
+                return Result<User>.Failure("This email is not registered", 404);
+            }
+            return Result<User>.Success(result);
+        }
+
+        public async Task<Result<User_Get>> GetUserByIdAsync(Guid userId)
+        {
+            var result = await _context.Users.FindAsync(userId);
+            if (result == null)
+            {
+                return Result<User_Get>.Failure("User not found", 404);
             }
             return Result<User_Get>.Success(new User_Get
             {
@@ -35,28 +45,9 @@ namespace Backend.src.User.repository
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 Email = result.Email,
-                UserRoles = result.UserRoles,
+                UserRoles = result.UserRoles?.Count > 0 ? string.Join(",", result.UserRoles) : string.Empty,
                 PhoneNumber = result.PhoneNumber,
                 Address = result.Address
-            });
-        }
-
-        public async Task<Result<User_Get>> GetUserByIdAsync(Guid userId)
-        {
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                return Result<User_Get>.Failure("User not found", 404);
-            }
-            return Result<User_Get>.Success(new User_Get
-            {
-                UserId = user.UserId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                UserRoles = user.UserRoles,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address
             });
         }
 
@@ -88,7 +79,7 @@ namespace Backend.src.User.repository
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                UserRoles = user.UserRoles,
+                UserRoles = user.UserRoles?.Count > 0 ? string.Join(",", user.UserRoles) : string.Empty,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address
             });

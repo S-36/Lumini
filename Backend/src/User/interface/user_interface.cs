@@ -6,7 +6,7 @@ namespace Backend.src.User.Interface
     public interface IUserRepository
     {
         Task<User> RegisterUserAsync(User user);
-        Task<Result<User_Get>> GetUserByEmailAsync(string email);
+        Task<Result<User>> GetUserByEmailAsync(string email);
         Task<Result<User_Get>> GetUserByIdAsync(Guid userId);
         Task<bool> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(Guid userId);
@@ -16,8 +16,8 @@ namespace Backend.src.User.Interface
 
     public interface IUserService
     {
-        Task<User> RegisterUserAsync(User_Register_DTO userDto);
-        Task<User> LoginUserAsync(User_Login_DTO loginDto);
+        Task<Result<User>> RegisterUserAsync(User_Register_DTO userDto);
+        Task<Result<string>> LoginUserAsync(User_Login_DTO loginDto);
 
     }
 }

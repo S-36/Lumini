@@ -7,7 +7,7 @@ namespace Backend.src.User
     public class User
     {
         [Key]
-        public Guid UserId { get; private set; } = Guid.NewGuid();
+        public Guid UserId { get; set; } = Guid.NewGuid();
         [MaxLength(100)]
         public string FirstName { get; set; } = string.Empty;
         [MaxLength(100)]
@@ -19,7 +19,7 @@ namespace Backend.src.User
         public string PasswordHash { get; set; } = string.Empty;
         [MaxLength(50)]
         [AllowedValues("Admin", "Manager", "Worker")]
-        public string UserRoles { get; set; } = string.Empty;
+        public List<string> UserRoles { get; set; } = [];
         [MaxLength(20)]
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
