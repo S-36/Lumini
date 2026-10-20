@@ -13,7 +13,6 @@ namespace Backend.src.User.dtos
         public string Email { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
-        public string UserRoles { get; set; } = "Worker"; // Default role
         public string PhoneNumber { get; set; } = string.Empty;
 
         // additional or optional fields 

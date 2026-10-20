@@ -3,6 +3,7 @@ namespace Backend.src.User.controller
     using Backend.Error;
     using Backend.src.User.dtos;
     using Backend.src.User.Interface;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -16,6 +17,7 @@ namespace Backend.src.User.controller
             _userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] User_Register_DTO userDto)
         {
@@ -27,6 +29,7 @@ namespace Backend.src.User.controller
             return Ok(result.StatusCode);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] User_Login_DTO loginDto)
         {

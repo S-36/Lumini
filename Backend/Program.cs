@@ -2,11 +2,15 @@ using Backend.DB.MongoDB;
 using Backend.DB.PostgreSQL;
 using Backend.JWT;
 using Backend.Middleware;
+using Backend.src.User.Interface;
+using Backend.src.User.repository;
+using Backend.src.User.Services;
 using DotNetEnv;
 using Lumini.Backend.Bycript;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,6 +27,29 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Lumini-Backend", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Ingresa el token JWT como: Bearer {token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 // Load Env variables 
@@ -63,6 +90,7 @@ builder.Services.Configure<JwtSettings>(options =>
 builder.Services.AddAuthentication(options =>
 {   // Set the default authentication scheme to JWT Bearer
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
@@ -88,7 +116,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("DevelomentPolicy", policy =>
     {
         // Add Policy configuration 
-        policy.WithOrigins("http://localhost:5050") // LocalHost Frontend URL
+        policy.AllowAnyOrigin() // LocalHost Frontend URL
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
@@ -105,13 +133,13 @@ builder.Services.AddCors(options =>
 
 
 // ======== Primary Services ===============================
-builder.Services.AddScoped<ISQLContext, PostgreSQLContext>();
 builder.Services.AddSingleton<IMongoContext, MongoDBContext>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IBycriptService, BycriptService>();
 
 // ============= SRC services and repositories ======================== 
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // start pipeline
 var app = builder.Build();

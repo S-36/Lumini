@@ -8,9 +8,9 @@ namespace Backend.src.User.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly JwtService _jwtService;
+        private readonly IJwtService _jwtService;
 
-        public UserService(IUserRepository userRepository, JwtService jwtService)
+        public UserService(IUserRepository userRepository, IJwtService jwtService)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
@@ -22,13 +22,15 @@ namespace Backend.src.User.Services
             var user = new User
             {
                 UserId = Guid.NewGuid(),
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
                 Email = userDto.Email,
                 PasswordHash = HashPassword(userDto.Password),
-                UserRoles = string.IsNullOrWhiteSpace(userDto.UserRoles)
-                    ? []
-                    : [userDto.UserRoles]
+                UserRoles = ["Worker"],
+                PhoneNumber = userDto.PhoneNumber,
+                Address = userDto.Address
             };
-
+            
             var registeredUser = await _userRepository.RegisterUserAsync(user);
             return Result.Success(201);
         }
