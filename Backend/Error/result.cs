@@ -10,11 +10,11 @@ namespace Backend.Error
         public int StatusCode { get; private set; }
 
         // Métodos estáticos para crear resultados — Necesario para Resultados que devuelven un valor (como el token en Login)
-        public static Result<T> Success(T value) => new Result<T>
+        public static Result<T> Success(T value, int statusCode) => new Result<T>
         {
             IsSuccess = true,
             Value = value,
-            StatusCode = 200
+            StatusCode = statusCode
         };
 
         public static Result<T> Failure(string error, int statusCode) => new Result<T>

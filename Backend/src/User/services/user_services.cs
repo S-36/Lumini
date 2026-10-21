@@ -51,7 +51,7 @@ namespace Backend.src.User.Services
 
             // Generate JWT token and return it
             var token = GenerateJwtToken(user);
-            return Result<string>.Success(token);
+            return Result<string>.Success(token, 200);
         }
 
         private string HashPassword(string password)

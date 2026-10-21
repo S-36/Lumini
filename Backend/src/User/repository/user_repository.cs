@@ -29,7 +29,7 @@ namespace Backend.src.User.repository
             {
                 return Result<User>.Failure("This email is not registered", 404);
             }
-            return Result<User>.Success(result);
+            return Result<User>.Success(result, 200);
         }
 
         public async Task<Result<User_Get>> GetUserByIdAsync(Guid userId)
@@ -48,7 +48,7 @@ namespace Backend.src.User.repository
                 UserRoles = result.UserRoles?.Count > 0 ? string.Join(",", result.UserRoles) : string.Empty,
                 PhoneNumber = result.PhoneNumber,
                 Address = result.Address
-            });
+            }, 200);
         }
 
         public async Task<bool> UpdateUserAsync(User user)

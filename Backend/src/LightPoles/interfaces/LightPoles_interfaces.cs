@@ -11,13 +11,18 @@ namespace Backend.src.LightPoles.Interfaces
             double latitude,
             double longitude,
             bool? isFunctional = null);
-        Task<LightPole> AddAsync(LightPole lightPole);
-        Task<bool> UpdateAsync(LightPole lightPole);
-        Task<bool> DeleteAsync(Guid id);
+        Task<Result> AddAsync(LightPole lightPole);
+        Task<Result> UpdateAsync(LightPole lightPole);
+        Task<Result> DeleteAsync(Guid id);
     }
 
     public interface ILightPoleService
     {
-        
+        Task<Result> CreateLightPoleAsync(LightPole lightPole);
+        Task<Result<IReadOnlyList<LightPoleMapMarkerDto>>> GetLightPolesMap(int pageNumber = 1, int pageSize = 50);
+        Task<Result<IReadOnlyList<LightPoleMapMarkerDto>>> GetLightPolesWithinBoundsAsync(
+            double latitude,
+            double longitude,
+            bool? isFunctional = null);
     }
 }
